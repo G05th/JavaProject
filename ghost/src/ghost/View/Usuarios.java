@@ -311,13 +311,6 @@ public class Usuarios extends javax.swing.JFrame {
         usuarios.setEndereco(endereco.getText());
         usuarios.setSenha(new String(password.getPassword()));
     
-    try {
-        int id_usuario = Integer.parseInt(id.getText());
-        usuarios.setId_usuario(id_usuario);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-        return; // Interrompe a execução se o ID for inválido
-    }
 
     Usuario usuario = new Usuario();
     
