@@ -102,6 +102,7 @@ public class Usuarios extends javax.swing.JFrame {
         pesquisar = new javax.swing.JTextField();
         delete1 = new javax.swing.JButton();
         limpar = new javax.swing.JButton();
+        relatorio = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,6 +269,18 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
+        relatorio.setText("Relatório");
+        relatorio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relatorioMouseClicked(evt);
+            }
+        });
+        relatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -297,10 +310,11 @@ public class Usuarios extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(delete))
                             .addComponent(id))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(relatorio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(delete1)))
@@ -313,7 +327,8 @@ public class Usuarios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(delete1)
                     .addComponent(pesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(limpar))
+                    .addComponent(limpar)
+                    .addComponent(relatorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -550,6 +565,20 @@ public class Usuarios extends javax.swing.JFrame {
         delete.setEnabled(false);
     }//GEN-LAST:event_limparMouseClicked
 
+    private void relatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relatorioMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_relatorioMouseClicked
+
+    private void relatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relatorioActionPerformed
+        // TODO add your handling code here:
+        String caminhoArquivo = "/home/ghost/Documentos/usuario.csv";
+
+    Usuario relatorio = new Usuario();
+    relatorio.gerarRelatorioCSV(caminhoArquivo);
+
+    JOptionPane.showMessageDialog(this, "Relatório CSV gerado com sucesso!");
+    }//GEN-LAST:event_relatorioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -617,6 +646,7 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField pesquisar;
     private javax.swing.JButton read;
+    private javax.swing.JButton relatorio;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

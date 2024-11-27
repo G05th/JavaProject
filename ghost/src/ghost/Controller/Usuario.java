@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import ghost.model.bean.UsuarioModel;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 /**
@@ -135,5 +137,30 @@ public class Usuario {
         }
 
         return users;
+    }
+    
+    public void gerarRelatorioCSV(String caminhoArquivo) {
+        String query = "SELECT * FROM usuario";
+
+        try (Connection conexao = Connection_BD.getConnection();
+             Statement stmt = conexao.createStatement();
+             ResultSet rs = stmt.executeQuery(query);
+             FileWriter writer = new FileWriter(caminhoArquivo)) {
+
+            writer.append("ID,Nome,Email,Endereço\n");
+
+            while (rs.next()) {
+                writer.append(rs.getInt("id_usuario") + ",");
+                writer.append(rs.getString("nome") + ",");
+                writer.append(rs.getString("email") + ",");
+                writer.append(rs.getString("endereco") + "\n");
+            }
+
+            writer.flush();
+            System.out.println("Relatório CSV gerado com sucesso!");
+
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
