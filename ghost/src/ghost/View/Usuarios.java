@@ -509,6 +509,7 @@ public class Usuarios extends javax.swing.JFrame {
         int selectedRow = Tabela.getSelectedRow();
         update.setEnabled(true);
         delete.setEnabled(true);
+        create.setEnabled(false);
 
         // Verifica se há uma linha selecionada
         if (selectedRow != -1) {
