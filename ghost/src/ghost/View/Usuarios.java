@@ -257,6 +257,7 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
+        limpar.setBackground(new java.awt.Color(0, 255, 51));
         limpar.setText("Limpar");
         limpar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -269,6 +270,7 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
+        relatorio.setBackground(new java.awt.Color(204, 255, 255));
         relatorio.setText("Relatório");
         relatorio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -365,47 +367,47 @@ public class Usuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void verificarCampos() {
-    boolean todosPreenchidos = !nome.getText().isEmpty()
-            && !email.getText().isEmpty()
-            && !endereco.getText().isEmpty()
-            && password.getPassword().length >= 7;
+        boolean todosPreenchidos = !nome.getText().isEmpty()
+                && !email.getText().isEmpty()
+                && !endereco.getText().isEmpty()
+                && password.getPassword().length >= 7;
 
-    create.setEnabled(todosPreenchidos);
-}
+        create.setEnabled(todosPreenchidos);
+    }
+
     private void adicionarListenersCampos() {
-    // Adiciona DocumentListener nos campos de texto
-    JTextField[] camposTexto = {nome, email, endereco};
+        // Adiciona DocumentListener nos campos de texto
+        JTextField[] camposTexto = {nome, email, endereco};
 
-    for (JTextField campo : camposTexto) {
-        campo.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                verificarCampos();
-            }
+        for (JTextField campo : camposTexto) {
+            campo.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    verificarCampos();
+                }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                verificarCampos();
-            }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    verificarCampos();
+                }
 
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    verificarCampos();
+                }
+            });
+        }
+
+        // Adiciona KeyListener ao campo de senha
+        password.addKeyListener(new KeyAdapter() {
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void keyReleased(KeyEvent e) {
                 verificarCampos();
             }
         });
     }
 
-    // Adiciona KeyListener ao campo de senha
-    password.addKeyListener(new KeyAdapter() {
-        @Override
-        public void keyReleased(KeyEvent e) {
-            verificarCampos();
-        }
-    });
-}
-    
 
-    
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         // TODO add your handling code here:
         if (nome.getText().isEmpty() && email.getText().isEmpty() && endereco.getText().isEmpty() && password.getPassword().length < 7) {
@@ -574,10 +576,10 @@ public class Usuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
         String caminhoArquivo = "/home/ghost/Documentos/usuario.csv";
 
-    Usuario relatorio = new Usuario();
-    relatorio.gerarRelatorioCSV(caminhoArquivo);
+        Usuario relatorio = new Usuario();
+        relatorio.gerarRelatorioCSV(caminhoArquivo);
 
-    JOptionPane.showMessageDialog(this, "Relatório CSV gerado com sucesso!");
+        JOptionPane.showMessageDialog(this, "Relatório CSV gerado com sucesso!");
     }//GEN-LAST:event_relatorioActionPerformed
 
     /**
