@@ -108,4 +108,32 @@ public class Usuario {
             return false;
         }
 }
+    public List<UsuarioModel> searchUsuarios(String pesquisa) {
+        List<UsuarioModel> users = new ArrayList<>();
+        String query = "SELECT * FROM usuario WHERE nome LIKE ?";
+
+        try (Connection conn = Connection_BD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Configura o parâmetro da pesquisa para SQL
+            stmt.setString(1, "%" + pesquisa + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            // Itera sobre o resultado da consulta
+            while (rs.next()) {
+                UsuarioModel usuario = new UsuarioModel();
+                usuario.setId_usuario(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setEndereco(rs.getString("endereco"));
+                usuario.setSenha(rs.getString("senha"));
+                users.add(usuario);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
 }

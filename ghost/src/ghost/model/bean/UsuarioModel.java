@@ -15,6 +15,15 @@ public class UsuarioModel {
     private String email;
     private String endereco;
     private String senha;
+    private String pesquisa;
+
+    public String getPesquisa() {
+        return pesquisa;
+    }
+
+    public void setPesquisa(String pesquisa) {
+        this.pesquisa = pesquisa;
+    }
 
     public int getId_usuario() {
         return id_usuario;

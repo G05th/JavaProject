@@ -6,9 +6,14 @@ package ghost.View;
 
 import ghost.Controller.Usuario;
 import ghost.model.bean.UsuarioModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,14 +26,19 @@ public class Usuarios extends javax.swing.JFrame {
      */
     public Usuarios() {
         initComponents();
+        adicionarListenersCampos();
+        id.setEditable(false);
+        create.setEnabled(false);
+        update.setEnabled(false);
+        delete.setEnabled(false);
         DefaultTableModel modelo = (DefaultTableModel) Tabela.getModel();
         Tabela.setRowSorter(new TableRowSorter(modelo));
         Tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-            TabelaMouseClicked(evt);
-    }
-});
-        
+                TabelaMouseClicked(evt);
+            }
+        });
+
     }
 
     public void readTable() {
@@ -37,7 +47,7 @@ public class Usuarios extends javax.swing.JFrame {
         modelo.setNumRows(0);
 
         Usuario usuarios = new Usuario();
-        for(UsuarioModel u: usuarios.readUsuarios()){
+        for (UsuarioModel u : usuarios.readUsuarios()) {
             modelo.addRow(new Object[]{
                 u.getId_usuario(),
                 u.getNome(),
@@ -45,10 +55,10 @@ public class Usuarios extends javax.swing.JFrame {
                 u.getEndereco(),
                 u.getSenha()
             });
-            
         }
-        
-        
+    }
+
+    private void initComponentes() {
 
     }
 
@@ -89,6 +99,9 @@ public class Usuarios extends javax.swing.JFrame {
         jScrollPane8 = new javax.swing.JScrollPane();
         Tabela = new javax.swing.JTable();
         id = new javax.swing.JTextField();
+        pesquisar = new javax.swing.JTextField();
+        delete1 = new javax.swing.JButton();
+        limpar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,11 +248,31 @@ public class Usuarios extends javax.swing.JFrame {
         });
         jScrollPane8.setViewportView(Tabela);
 
+        delete1.setBackground(new java.awt.Color(255, 255, 153));
+        delete1.setText("Pesquisar");
+        delete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete1ActionPerformed(evt);
+            }
+        });
+
+        limpar.setText("Limpar");
+        limpar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                limparMouseClicked(evt);
+            }
+        });
+        limpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -247,31 +280,44 @@ public class Usuarios extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
-                    .addComponent(create))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(endereco)
-                    .addComponent(email)
-                    .addComponent(nome)
-                    .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                    .addComponent(create)
+                    .addComponent(limpar))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(read)
-                        .addGap(18, 18, 18)
-                        .addComponent(update)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(endereco)
+                            .addComponent(email)
+                            .addComponent(nome)
+                            .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(read)
+                                .addGap(18, 18, 18)
+                                .addComponent(update)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(delete))
+                            .addComponent(id))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(delete))
-                    .addComponent(id))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(delete1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(delete1)
+                    .addComponent(pesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(limpar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -297,35 +343,81 @@ public class Usuarios extends javax.swing.JFrame {
                             .addComponent(read)
                             .addComponent(update)
                             .addComponent(delete))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
-        // TODO add your handling code here:
-        UsuarioModel usuarios = new UsuarioModel();
-        usuarios.setNome(nome.getText());
-        usuarios.setEmail(email.getText());
-        usuarios.setEndereco(endereco.getText());
-        usuarios.setSenha(new String(password.getPassword()));
+    private void verificarCampos() {
+    boolean todosPreenchidos = !nome.getText().isEmpty()
+            && !email.getText().isEmpty()
+            && !endereco.getText().isEmpty()
+            && password.getPassword().length >= 7;
+
+    create.setEnabled(todosPreenchidos);
+}
+    private void adicionarListenersCampos() {
+    // Adiciona DocumentListener nos campos de texto
+    JTextField[] camposTexto = {nome, email, endereco};
+
+    for (JTextField campo : camposTexto) {
+        campo.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+        });
+    }
+
+    // Adiciona KeyListener ao campo de senha
+    password.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            verificarCampos();
+        }
+    });
+}
     
 
-    Usuario usuario = new Usuario();
     
-    // Verifica se o usuário foi criado com sucesso
-    if (usuario.createUsuario(usuarios)) {
-        JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        // Limpa os campos
-        nome.setText("");
-        email.setText("");
-        endereco.setText("");
-        password.setText("");
-        id.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
+        // TODO add your handling code here:
+        if (nome.getText().isEmpty() && email.getText().isEmpty() && endereco.getText().isEmpty() && password.getPassword().length < 7) {
+            JOptionPane.showMessageDialog(this, "Por favor preencha todos os campos, a senha dete ter no minimo 7 caracteres");
+        } else {
+            create.setEnabled(true);
+            UsuarioModel usuarios = new UsuarioModel();
+            usuarios.setNome(nome.getText());
+            usuarios.setEmail(email.getText());
+            usuarios.setEndereco(endereco.getText());
+            usuarios.setSenha(new String(password.getPassword()));
+
+            Usuario usuario = new Usuario();
+
+            // Verifica se o usuário foi criado com sucesso
+            if (usuario.createUsuario(usuarios)) {
+                JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                // Limpa os campos
+                nome.setText("");
+                email.setText("");
+                endereco.setText("");
+                password.setText("");
+                id.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_createActionPerformed
 
     private void readActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readActionPerformed
@@ -338,30 +430,30 @@ public class Usuarios extends javax.swing.JFrame {
         usuarios.setNome(nome.getText());
         usuarios.setEmail(email.getText());
         usuarios.setEndereco(endereco.getText());
-        usuarios.setSenha(new String(password.getPassword())); 
-    
-    try {
-        int id_usuario = Integer.parseInt(id.getText());
-        usuarios.setId_usuario(id_usuario);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-        return; // Interrompe a execução se o ID for inválido
-    }
+        usuarios.setSenha(new String(password.getPassword()));
 
-    Usuario usuario = new Usuario();
-    
-    // Verifica se o usuário foi criado com sucesso
-    if (usuario.updateUsuario(usuarios)) {
-        JOptionPane.showMessageDialog(this, "Usuário atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        // Limpa os campos
-        nome.setText("");
-        email.setText("");
-        endereco.setText("");
-        password.setText("");
-        id.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "Erro ao atualizado usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+        try {
+            int id_usuario = Integer.parseInt(id.getText());
+            usuarios.setId_usuario(id_usuario);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return; // Interrompe a execução se o ID for inválido
+        }
+
+        Usuario usuario = new Usuario();
+
+        // Verifica se o usuário foi criado com sucesso
+        if (usuario.updateUsuario(usuarios)) {
+            JOptionPane.showMessageDialog(this, "Usuário atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            // Limpa os campos
+            nome.setText("");
+            email.setText("");
+            endereco.setText("");
+            password.setText("");
+            id.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizado usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
 
 
     }//GEN-LAST:event_updateActionPerformed
@@ -369,29 +461,29 @@ public class Usuarios extends javax.swing.JFrame {
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
         UsuarioModel usuarios = new UsuarioModel();
-    
-    try {
-        int id_usuario = Integer.parseInt(id.getText());
-        usuarios.setId_usuario(id_usuario);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-        return; // Interrompe a execução se o ID for inválido
-    }
 
-    Usuario usuario = new Usuario();
-    
-    // Verifica se o usuário foi criado com sucesso
-    if (usuario.deleteUsuario(usuarios)) {
-        JOptionPane.showMessageDialog(this, "Usuário Excluído!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        // Limpa os campos
-        nome.setText("");
-        email.setText("");
-        endereco.setText("");
-        password.setText("");
-        id.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "Erro ao Excluir usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+        try {
+            int id_usuario = Integer.parseInt(id.getText());
+            usuarios.setId_usuario(id_usuario);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return; // Interrompe a execução se o ID for inválido
+        }
+
+        Usuario usuario = new Usuario();
+
+        // Verifica se o usuário foi criado com sucesso
+        if (usuario.deleteUsuario(usuarios)) {
+            JOptionPane.showMessageDialog(this, "Usuário Excluído!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            // Limpa os campos
+            nome.setText("");
+            email.setText("");
+            endereco.setText("");
+            password.setText("");
+            id.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao Excluir usuário!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void TabelaComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_TabelaComponentAdded
@@ -400,24 +492,63 @@ public class Usuarios extends javax.swing.JFrame {
 
     private void TabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseClicked
         int selectedRow = Tabela.getSelectedRow();
-    
-    // Verifica se há uma linha selecionada
-    if (selectedRow != -1) {
-        // Obtém os valores das células da linha selecionada
-        String nomeSelecionado = Tabela.getValueAt(selectedRow, 1).toString(); // Coluna 0: Nome
-        String emailSelecionado = Tabela.getValueAt(selectedRow, 2).toString(); // Coluna 1: Email
-        String enderecoSelecionado = Tabela.getValueAt(selectedRow, 3).toString(); // Coluna 2: Endereço
-        String idSelecionado = Tabela.getValueAt(selectedRow, 0).toString(); // Coluna 3: ID
-        String senhaSelecionada = Tabela.getValueAt(selectedRow, 4).toString(); // Coluna 4: Senha (Se aplicável)
-        
-        // Preenche os campos de texto com os valores obtidos
-        nome.setText(nomeSelecionado);
-        email.setText(emailSelecionado);
-        endereco.setText(enderecoSelecionado);
-        id.setText(idSelecionado);
-        password.setText(senhaSelecionada);
-    }                // TODO add your handling code here:
+        update.setEnabled(true);
+        delete.setEnabled(true);
+
+        // Verifica se há uma linha selecionada
+        if (selectedRow != -1) {
+            // Obtém os valores das células da linha selecionada
+            String nomeSelecionado = Tabela.getValueAt(selectedRow, 1).toString(); // Coluna 0: Nome
+            String emailSelecionado = Tabela.getValueAt(selectedRow, 2).toString(); // Coluna 1: Email
+            String enderecoSelecionado = Tabela.getValueAt(selectedRow, 3).toString(); // Coluna 2: Endereço
+            String idSelecionado = Tabela.getValueAt(selectedRow, 0).toString(); // Coluna 3: ID
+            String senhaSelecionada = Tabela.getValueAt(selectedRow, 4).toString(); // Coluna 4: Senha (Se aplicável)
+
+            // Preenche os campos de texto com os valores obtidos
+            nome.setText(nomeSelecionado);
+            email.setText(emailSelecionado);
+            endereco.setText(enderecoSelecionado);
+            id.setText(idSelecionado);
+            password.setText(senhaSelecionada);
+        }                // TODO add your handling code here:
     }//GEN-LAST:event_TabelaMouseClicked
+
+    private void delete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete1ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel modelo = (DefaultTableModel) Tabela.getModel();
+
+        // Limpa os dados existentes na tabela
+        modelo.setNumRows(0);
+
+        // Instancia o controller e realiza a pesquisa
+        Usuario usuarios = new Usuario();
+        String pesquisa = pesquisar.getText(); // Substitua pelo valor obtido de um campo de texto, por exemplo.
+
+        // Preenche a tabela com os resultados
+        for (UsuarioModel u : usuarios.searchUsuarios(pesquisa)) {
+            modelo.addRow(new Object[]{
+                u.getId_usuario(),
+                u.getNome(),
+                u.getEmail(),
+                u.getEndereco(),
+                u.getSenha()
+            });
+        }
+    }//GEN-LAST:event_delete1ActionPerformed
+
+    private void limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparActionPerformed
+        // TODO add your handling code here:
+        nome.setText("");
+        email.setText("");
+        endereco.setText("");
+        password.setText("");
+        id.setText("");
+    }//GEN-LAST:event_limparActionPerformed
+
+    private void limparMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limparMouseClicked
+        update.setEnabled(false);
+        delete.setEnabled(false);
+    }//GEN-LAST:event_limparMouseClicked
 
     /**
      * @param args the command line arguments
@@ -450,6 +581,7 @@ public class Usuarios extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Usuarios().setVisible(true);
+
             }
         });
     }
@@ -458,6 +590,7 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JTable Tabela;
     private javax.swing.JButton create;
     private javax.swing.JButton delete;
+    private javax.swing.JButton delete1;
     private javax.swing.JTextField email;
     private javax.swing.JTextField endereco;
     private javax.swing.JTextField id;
@@ -479,8 +612,10 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
+    private javax.swing.JButton limpar;
     private javax.swing.JTextField nome;
     private javax.swing.JPasswordField password;
+    private javax.swing.JTextField pesquisar;
     private javax.swing.JButton read;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
